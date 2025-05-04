@@ -4,82 +4,87 @@ import subprocess
 
 # Khởi tạo Pygame
 pygame.init()
+
 # Đường dẫn đến file nhạc   
 music_path = "D:/test/GameTTNT/src/Music/nenstart.mp3"
+font_path = "D:/test/GameTTNT/src/Font/Minecraft.ttf"
+print("Font loaded successfully")
+
 # Kích thước màn hình
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 600
+SCREEN_WIDTH = 1000
+SCREEN_HEIGHT = 500
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("WELCOME THE MAZE GAME")
+
 # Phát nhạc
 pygame.mixer.music.load(music_path)
-pygame.mixer.music.play()
+pygame.mixer.music.play(-1)  # Lặp vô hạn
+
 # Màu sắc
 WHITE = (255, 255, 255)
+GREY = (128, 128, 128)
 BLACK = (0, 0, 0)
 
-# Font
-font = pygame.font.SysFont(None, 36)
+# Font lớn cho tiêu đề
+font = pygame.font.Font(font_path, 52)
+# Font cho nút
+button_font = pygame.font.Font(font_path, 24)
 
-# Định nghĩa biến start_button ở đây để trở thành biến toàn cục
-start_button = pygame.Rect(300, 300, 200, 50)
+# Kích thước nút START
+button_width = 200
+button_height = 70
+start_button = pygame.Rect(
+    (SCREEN_WIDTH - button_width) // 2,
+    (SCREEN_HEIGHT - button_height) // 2 + 30,
+    button_width,
+    button_height
+)
 
+# Hàm vẽ chữ có viền (giả lập outline)
+def draw_outlined_text(surface, text, font, x, y, text_color, outline_color):
+    outline_range = 2
+    for dx in [-outline_range, 0, outline_range]:
+        for dy in [-outline_range, 0, outline_range]:
+            if dx != 0 or dy != 0:
+                outline = font.render(text, True, outline_color)
+                surface.blit(outline, (x + dx, y + dy))
+    text_surface = font.render(text, True, text_color)
+    surface.blit(text_surface, (x, y))
+
+# Vẽ màn hình start
 def draw_start_screen():
-    # Load hình nền
     background = pygame.image.load("D:/test/GameTTNT/src/Picture/wellcome.jpg").convert()
     background = pygame.transform.scale(background, (SCREEN_WIDTH, SCREEN_HEIGHT))
-    
-    # Vẽ hình nền
     screen.blit(background, (0, 0))
-    
-    # Vẽ văn bản và nút bắt đầu trên hình nền
-    text = font.render("Welcome to the maze game", True, BLACK)
-    text_rect = text.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 50))
-    screen.blit(text, text_rect)
-    
-    pygame.draw.rect(screen, BLACK, start_button)
-    start_text = font.render("START", True, WHITE)
 
+    # Tiêu đề
+    title_text = "Welcome to the maze game"
+    text_width, text_height = font.size(title_text)
+    x = (SCREEN_WIDTH - text_width) // 2
+    y = SCREEN_HEIGHT // 2 - 100
+    draw_outlined_text(screen, title_text, font, x, y, GREY, BLACK)
+
+    # Nút START
+    pygame.draw.rect(screen, GREY, start_button, border_radius=8)
+    start_text = button_font.render("START", True, WHITE)
     start_text_rect = start_text.get_rect(center=start_button.center)
     screen.blit(start_text, start_text_rect)
 
     pygame.display.flip()
 
-def main_game():
-    running = True
-    while running:
-        # Xử lý sự kiện
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-
-        # Cập nhật trạng thái của trò chơi
-        # Điều này bao gồm việc vẽ mê cung, xử lý di chuyển của nhân vật, xử lý va chạm, vv.
-
-        # Vẽ màn hình
-        screen.fill(WHITE)
-        # Vẽ mê cung, nhân vật, vv. ở đây
-
-        pygame.display.flip()
-
 def main():
     running = True
-    game_started = False
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if start_button.collidepoint(event.pos):
-                    # Chạy tệp main.py
                     main_py_path = r"D:\test\GameTTNT\src\Code\Main.py"
                     subprocess.Popen(["python", "-u", main_py_path])
-                    # Thoát khỏi tệp hiện tại
                     pygame.quit()
                     sys.exit()
-
         draw_start_screen()
-
     pygame.quit()
 
 if __name__ == "__main__":

@@ -16,11 +16,11 @@ class Maze:
         # Thêm chướng ngại vật hố sâu
         self.obstacles = set()  # Danh sách các chướng ngại vật
         self.create_obstacles()  # Tạo chướng ngại vật hố sâu
-        self.obstacle_image = pygame.image.load("D:/test/GameTTNT/src/Picture/iconbom.png")
+        self.obstacle_image = pygame.image.load("D:/test/GameTTNT/src/Picture/iconbom.jpg")
         # Thay đổi kích thước của hình ảnh chướng ngại vật để phù hợp với kích thước ô trong mê cung
         cell_size = 20  # Kích thước của mỗi ô trong mê cung
         self.obstacle_image = pygame.transform.scale(self.obstacle_image, (cell_size, cell_size))  # Đổi kích thước của hình ảnh
-        self.reward_image = pygame.image.load("D:/test/GameTTNT/src/Picture/selectbackground.jpg")
+        self.reward_image = pygame.image.load("D:/test/GameTTNT/src/Picture/background.png")
         self.rewards = set()  # Danh sách các phần thưởng
         self.create_rewards()  # Tạo phần thưởng
     # Tạo 10 chướng ngại vật
@@ -83,11 +83,11 @@ class Maze:
  
     def display_maze(self, screen, ai):
         cell_size = 20
-        obstacle_image = pygame.image.load("D:/test/GameTTNT/src/Picture/hangrao.jpg")
+        obstacle_image = pygame.image.load("D:/test/GameTTNT/src/Picture/hangrao.png").convert_alpha()
         obstacle_image = pygame.transform.scale(obstacle_image, (cell_size, cell_size))
-        end_image = pygame.image.load("D:/test/GameTTNT/src/Picture/dautay.jpg")
+        end_image = pygame.image.load("D:/test/GameTTNT/src/Picture/dautay.webp")
         end_image = pygame.transform.scale(end_image, (cell_size, cell_size))
-        reward_image = pygame.image.load("D:/test/GameTTNT/src/Picture/phanthuong.jpg")
+        reward_image = pygame.image.load("D:/test/GameTTNT/src/Picture/phanthuong.png")
         reward_image = pygame.transform.scale(reward_image, (cell_size, cell_size))
 
         # Vẽ mê cung trên màn hình

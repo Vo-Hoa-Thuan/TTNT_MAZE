@@ -7,8 +7,12 @@ from ControlPanel import ControlPanel
 from AI import AI
 from Algorithms import dijkstra, heuristic
 
+font_path = "D:/test/GameTTNT/src/Font/Minecraft.ttf"
+
+
 def main():
     pygame.init()  # Khởi tạo pygame
+    
     width, height = 1000, 500  # Đặt kích thước cửa sổ game
     screen = pygame.display.set_mode((width, height))  # Tạo cửa sổ game với kích thước đã định
     pygame.mixer.init()  # Khởi tạo mixer cho âm thanh
@@ -102,7 +106,8 @@ def main():
                     next_step = shortest_path.pop(1)
                     ai.move_towards(next_step[0], next_step[1])
             # Vẽ lại icon tại vị trí mới
-            player_image = pygame.image.load("D:/test/GameTTNT/src/Picture/icon.png")
+            player_image = pygame.image.load("D:/test/GameTTNT/src/Picture/icon.png").convert_alpha()
+            player_image.set_colorkey((0, 0, 0))  # loại bỏ màu đen
             cell_size = 20
             player_image = pygame.transform.scale(player_image, (cell_size, cell_size))
             screen.blit(player_image, (ai.x * cell_size, ai.y * cell_size))
@@ -112,6 +117,7 @@ def main():
 
         for reward in maze.rewards:
             if (ai.x, ai.y) == reward:
+                start_time = time.time()
                 start_time += 3  # Cộng thêm 3 giây vào thời gian đếm ngược
                 rewards_to_remove.append(reward)  # Thêm phần tử cần loại bỏ vào danh sách tạm thời
                 play_reward_music = True  # Đặt biến đánh dấu để phát nhạc khi di chuyển trúng phần thưởng
