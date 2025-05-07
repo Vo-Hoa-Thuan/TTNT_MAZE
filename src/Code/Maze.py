@@ -116,13 +116,26 @@ class Maze:
                     screen.blit(obstacle_image, (x * cell_size, y * cell_size))
                 else:
                     pygame.draw.rect(screen, (255, 255, 255), (x * cell_size, y * cell_size, cell_size, cell_size))
-        
         # Vẽ chướng ngại vật hố sâu
         for obstacle in self.obstacles:
             x, y = obstacle
+            # Trong phương thức display_maze của lớp Maze, thay thế dòng vẽ hình ảnh chướng ngại vật
             pygame.draw.circle(screen, (255, 165, 0), (x * cell_size + cell_size // 2, y * cell_size + cell_size // 2), cell_size // 3)
+            # bằng
             screen.blit(self.obstacle_image, (x * cell_size, y * cell_size))
+        
+        # Vẽ đường đã đi qua thành màu vàng
+        path_color = (148, 0, 211)  # Màu vàng cho đường đã đi qua
+        if ai.x == self.end_x and ai.y == self.end_y:  # Kiểm tra xem con AI đã đến điểm cuối chưa
+            for step in ai.path:  # Vẽ màu vàng trên tất cả các ô đã đi qua của con AI
+                x, y = step
+                pygame.draw.rect(screen, path_color, (x * cell_size, y * cell_size, cell_size, cell_size))
+        else:  # Nếu chưa đến điểm cuối, vẽ đường đã đi qua như bình thường
+            for step in self.path:
+                x, y = step
+                pygame.draw.rect(screen, path_color, (x * cell_size, y * cell_size, cell_size, cell_size))
 
+    
     def get_neighbors(self, x, y):
             neighbors = []
             # Duyệt qua các hướng lân cận của ô hiện tại
