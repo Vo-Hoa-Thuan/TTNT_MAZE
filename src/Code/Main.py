@@ -5,9 +5,9 @@ from queue import PriorityQueue
 import time
 from ControlPanel import ControlPanel
 from AI import AI
-from Algorithms import dijkstra, heuristic
+from Algorithms import a_star, heuristic
 
-font_path = "D:/test/GameTTNT/src/Font/Minecraft.ttf"
+font_path = "D:/TTNT_MAZE/src/Font/Minecraft.ttf"
 
 
 def main():
@@ -16,7 +16,7 @@ def main():
     width, height = 1000, 500  # Đặt kích thước cửa sổ game
     screen = pygame.display.set_mode((width, height))  # Tạo cửa sổ game với kích thước đã định
     pygame.mixer.init()  # Khởi tạo mixer cho âm thanh
-    pygame.mixer.music.load("D:/test/GameTTNT/src/Music/nhac.mp3")  # Tải nhạc từ đường dẫn cụ thể
+    pygame.mixer.music.load("D:/TTNT_MAZE/src/Music/nhac.mp3")  # Tải nhạc từ đường dẫn cụ thể
     pygame.mixer.music.set_volume(0.5)  # Đặt âm lượng của nhạc
     music_start_time = None  # Khởi tạo biến để lưu thời gian bắt đầu phát nhạc
     control_panel = ControlPanel(300, 500)  # Khởi tạo ControlPanel với kích thước
@@ -47,13 +47,13 @@ def main():
                 if 750 <= mouse_x <= 950 and 50 <= mouse_y <= 100:
                     auto_play = True
                     start_time = time.time()
-                    pygame.mixer.music.load("D:/test/GameTTNT/src/Music/nhac.mp3")  # Tải nhạc từ đường dẫn
+                    pygame.mixer.music.load("D:/TTNT_MAZE/src/Music/nhac.mp3")  # Tải nhạc từ đường dẫn
                     pygame.mixer.music.play()  # Phát nhạc khi người dùng nhấn vào Auto Play
                 elif 750 <= mouse_x <= 950 and 150 <= mouse_y <= 200:
                     auto_play = True
-                    shortest_path = dijkstra(maze)
+                    shortest_path = a_star(maze)
                     start_time = time.time()
-                    pygame.mixer.music.load("D:/test/GameTTNT/src/Music/nhac.mp3")  # Tải nhạc từ đường dẫn
+                    pygame.mixer.music.load("D:/TTNT_MAZE/src/Music/nhac.mp3")  # Tải nhạc từ đường dẫn
                     pygame.mixer.music.play()  # Phát nhạc khi người dùng nhấn vào AI Play
                 elif 750 <= mouse_x <= 950 and 250 <= mouse_y <= 300:
                     maze = Maze(35, 25)
@@ -88,7 +88,7 @@ def main():
                     start_time = None  # Dừng đếm thời gian
 
                     # Tải và phát nhạc khi đến đích
-                    pygame.mixer.music.load("D:/test/GameTTNT/src/Music/dendich.mp3")
+                    pygame.mixer.music.load("D:/TTNT_MAZE/src/Music/dendich.mp3")
                     pygame.mixer.music.play()
 
                     # Bắt đầu hiển thị thông báo chúc mừng
@@ -106,7 +106,7 @@ def main():
                     next_step = shortest_path.pop(1)
                     ai.move_towards(next_step[0], next_step[1])
             # Vẽ lại icon tại vị trí mới
-            player_image = pygame.image.load("D:/test/GameTTNT/src/Picture/icon.png").convert_alpha()
+            player_image = pygame.image.load("D:/TTNT_MAZE/src/Picture/icon.png").convert_alpha()
             player_image.set_colorkey((0, 0, 0))  # loại bỏ màu đen
             cell_size = 20
             player_image = pygame.transform.scale(player_image, (cell_size, cell_size))
@@ -129,12 +129,12 @@ def main():
         # Phát nhạc khi di chuyển trúng phần thưởng
         # Phát nhạc khi di chuyển trúng phần thưởng
         if play_reward_music:
-            pygame.mixer.music.load("D:/test/GameTTNT/src/Music/trungthuong.mp3")
+            pygame.mixer.music.load("D:/TTNT_MAZE/src/Music/trungthuong.mp3")
             pygame.mixer.music.play()
             # Gán sự kiện kết thúc nhạc
             pygame.mixer.music.set_endevent(pygame.USEREVENT)
             # Thêm hàm callback để phát nhạc tiếp theo sau khi nhạc hiện tại kết thúc
-            pygame.mixer.music.queue("D:/test/GameTTNT/src/Music/nhac.mp3")
+            pygame.mixer.music.queue("D:/TTNT_MAZE/src/Music/nhac.mp3")
             
         if start_time is not None and not game_over:
             elapsed_time = countdown_time - int(time.time() - start_time)  # Thời gian còn lại được tính bằng cách trừ thời gian đã trôi qua từ 60
@@ -154,7 +154,7 @@ def main():
                 game_over_display_time = pygame.time.get_ticks()  # Lưu thời điểm hiển thị thông báo game over
 
                 # Tải và phát nhạc khi game over
-                pygame.mixer.music.load("D:/test/GameTTNT/src/Music/gameover.mp3")
+                pygame.mixer.music.load("D:/TTNT_MAZE/src/Music/gameover.mp3")
                 pygame.mixer.music.play()
                 
             # Kiểm tra và vẽ thông báo chúc mừng nếu cần

@@ -64,14 +64,14 @@ class AI:
         pygame.mixer.init()
 
         # Phát nhạc 'trungchuongngaivat.mp3'
-        pygame.mixer.music.load("D:/test/GameTTNT/src/Music/trungchuongngaivat.mp3")
+        pygame.mixer.music.load("D:/TTNT_MAZE/src/Music/trungchuongngaivat.mp3")
         pygame.mixer.music.play()
 
         # Đợi cho nhạc phát xong
         pygame.time.wait(3000)  # Chờ 3 giây
 
         # Phát nhạc 'nhac.mp3'
-        pygame.mixer.music.load("D:/test/GameTTNT/src/Music/nhac.mp3")
+        pygame.mixer.music.load("D:/TTNT_MAZE/src/Music/nhac.mp3")
         pygame.mixer.music.play()
 
         

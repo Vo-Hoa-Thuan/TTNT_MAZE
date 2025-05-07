@@ -6,8 +6,8 @@ import subprocess
 pygame.init()
 
 # Đường dẫn đến file nhạc   
-music_path = "D:/test/GameTTNT/src/Music/nenstart.mp3"
-font_path = "D:/test/GameTTNT/src/Font/Minecraft.ttf"
+music_path = "D:/TTNT_MAZE/src/Music/nenstart.mp3"
+font_path = "D:/TTNT_MAZE/src/Font/Minecraft.ttf"
 print("Font loaded successfully")
 
 # Kích thước màn hình
@@ -53,7 +53,7 @@ def draw_outlined_text(surface, text, font, x, y, text_color, outline_color):
 
 # Vẽ màn hình start
 def draw_start_screen():
-    background = pygame.image.load("D:/test/GameTTNT/src/Picture/wellcome.jpg").convert()
+    background = pygame.image.load("D:/TTNT_MAZE/src/Picture/wellcome.jpg").convert()
     background = pygame.transform.scale(background, (SCREEN_WIDTH, SCREEN_HEIGHT))
     screen.blit(background, (0, 0))
 
@@ -80,7 +80,7 @@ def main():
                 running = False
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if start_button.collidepoint(event.pos):
-                    main_py_path = r"D:\test\GameTTNT\src\Code\Main.py"
+                    main_py_path = r"D:\TTNT_MAZE\src\Code\Main.py"
                     subprocess.Popen(["python", "-u", main_py_path])
                     pygame.quit()
                     sys.exit()

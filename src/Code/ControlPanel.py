@@ -4,11 +4,11 @@ from Maze import Maze
 from pygame.locals import *
 from queue import PriorityQueue
 
-font_path = "D:/test/GameTTNT/src/Font/Minecraft.ttf"
+font_path = "D:/TTNT_MAZE/src/Font/Minecraft.ttf"
 
 class ControlPanel:
     def __init__(self, width, height):
-        self.background_image = pygame.image.load("D:/test/GameTTNT/src/Picture/background.png")
+        self.background_image = pygame.image.load("D:/TTNT_MAZE/src/Picture/background.png")
         self.background_image = pygame.transform.scale(self.background_image, (300, 500))  # Chỉnh kích thước hình nền
         self.font = pygame.font.Font(font_path, 24)
         self.direction_keys = {K_UP: (0, -1), K_DOWN: (0, 1), K_LEFT: (-1, 0), K_RIGHT: (1, 0)}

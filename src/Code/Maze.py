@@ -16,11 +16,11 @@ class Maze:
         # Thêm chướng ngại vật hố sâu
         self.obstacles = set()  # Danh sách các chướng ngại vật
         self.create_obstacles()  # Tạo chướng ngại vật hố sâu
-        self.obstacle_image = pygame.image.load("D:/test/GameTTNT/src/Picture/iconbom.jpg")
+        self.obstacle_image = pygame.image.load("D:/TTNT_MAZE/src/Picture/iconbom.jpg")
         # Thay đổi kích thước của hình ảnh chướng ngại vật để phù hợp với kích thước ô trong mê cung
         cell_size = 20  # Kích thước của mỗi ô trong mê cung
         self.obstacle_image = pygame.transform.scale(self.obstacle_image, (cell_size, cell_size))  # Đổi kích thước của hình ảnh
-        self.reward_image = pygame.image.load("D:/test/GameTTNT/src/Picture/background.png")
+        self.reward_image = pygame.image.load("D:/TTNT_MAZE/src/Picture/background.png")
         self.rewards = set()  # Danh sách các phần thưởng
         self.create_rewards()  # Tạo phần thưởng
     # Tạo 10 chướng ngại vật
@@ -83,11 +83,11 @@ class Maze:
  
     def display_maze(self, screen, ai):
         cell_size = 20
-        obstacle_image = pygame.image.load("D:/test/GameTTNT/src/Picture/hangrao.png").convert_alpha()
+        obstacle_image = pygame.image.load("D:/TTNT_MAZE/src/Picture/hangrao.png").convert_alpha()
         obstacle_image = pygame.transform.scale(obstacle_image, (cell_size, cell_size))
-        end_image = pygame.image.load("D:/test/GameTTNT/src/Picture/dautay.webp")
+        end_image = pygame.image.load("D:/TTNT_MAZE/src/Picture/dautay.webp")
         end_image = pygame.transform.scale(end_image, (cell_size, cell_size))
-        reward_image = pygame.image.load("D:/test/GameTTNT/src/Picture/phanthuong.png")
+        reward_image = pygame.image.load("D:/TTNT_MAZE/src/Picture/phanthuong.png")
         reward_image = pygame.transform.scale(reward_image, (cell_size, cell_size))
 
         # Vẽ mê cung trên màn hình
@@ -116,26 +116,13 @@ class Maze:
                     screen.blit(obstacle_image, (x * cell_size, y * cell_size))
                 else:
                     pygame.draw.rect(screen, (255, 255, 255), (x * cell_size, y * cell_size, cell_size, cell_size))
+        
         # Vẽ chướng ngại vật hố sâu
         for obstacle in self.obstacles:
             x, y = obstacle
-            # Trong phương thức display_maze của lớp Maze, thay thế dòng vẽ hình ảnh chướng ngại vật
             pygame.draw.circle(screen, (255, 165, 0), (x * cell_size + cell_size // 2, y * cell_size + cell_size // 2), cell_size // 3)
-            # bằng
             screen.blit(self.obstacle_image, (x * cell_size, y * cell_size))
-        
-        # Vẽ đường đã đi qua thành màu vàng
-        path_color = (148, 0, 211)  # Màu vàng cho đường đã đi qua
-        if ai.x == self.end_x and ai.y == self.end_y:  # Kiểm tra xem con AI đã đến điểm cuối chưa
-            for step in ai.path:  # Vẽ màu vàng trên tất cả các ô đã đi qua của con AI
-                x, y = step
-                pygame.draw.rect(screen, path_color, (x * cell_size, y * cell_size, cell_size, cell_size))
-        else:  # Nếu chưa đến điểm cuối, vẽ đường đã đi qua như bình thường
-            for step in self.path:
-                x, y = step
-                pygame.draw.rect(screen, path_color, (x * cell_size, y * cell_size, cell_size, cell_size))
 
-    
     def get_neighbors(self, x, y):
             neighbors = []
             # Duyệt qua các hướng lân cận của ô hiện tại
