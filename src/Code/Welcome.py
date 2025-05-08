@@ -2,35 +2,26 @@ import pygame
 import sys
 import subprocess
 
-# Khởi tạo Pygame
 pygame.init()
 
-# Đường dẫn đến file nhạc   
 music_path = "D:/TTNT_MAZE/src/Music/nenstart.mp3"
 font_path = "D:/TTNT_MAZE/src/Font/Minecraft.ttf"
-print("Font loaded successfully")
 
-# Kích thước màn hình
 SCREEN_WIDTH = 1000
 SCREEN_HEIGHT = 500
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("WELCOME THE MAZE GAME")
 
-# Phát nhạc
 pygame.mixer.music.load(music_path)
-pygame.mixer.music.play(-1)  # Lặp vô hạn
+pygame.mixer.music.play(-1)
 
-# Màu sắc
 WHITE = (255, 255, 255)
 GREY = (128, 128, 128)
 BLACK = (0, 0, 0)
 
-# Font lớn cho tiêu đề
 font = pygame.font.Font(font_path, 52)
-# Font cho nút
 button_font = pygame.font.Font(font_path, 24)
 
-# Kích thước nút START
 button_width = 200
 button_height = 70
 start_button = pygame.Rect(
@@ -40,7 +31,6 @@ start_button = pygame.Rect(
     button_height
 )
 
-# Hàm vẽ chữ có viền (giả lập outline)
 def draw_outlined_text(surface, text, font, x, y, text_color, outline_color):
     outline_range = 2
     for dx in [-outline_range, 0, outline_range]:
@@ -51,20 +41,17 @@ def draw_outlined_text(surface, text, font, x, y, text_color, outline_color):
     text_surface = font.render(text, True, text_color)
     surface.blit(text_surface, (x, y))
 
-# Vẽ màn hình start
 def draw_start_screen():
     background = pygame.image.load("D:/TTNT_MAZE/src/Picture/wellcome.jpg").convert()
     background = pygame.transform.scale(background, (SCREEN_WIDTH, SCREEN_HEIGHT))
     screen.blit(background, (0, 0))
 
-    # Tiêu đề
     title_text = "Welcome to the maze game"
     text_width, text_height = font.size(title_text)
     x = (SCREEN_WIDTH - text_width) // 2
     y = SCREEN_HEIGHT // 2 - 100
     draw_outlined_text(screen, title_text, font, x, y, GREY, BLACK)
 
-    # Nút START
     pygame.draw.rect(screen, GREY, start_button, border_radius=8)
     start_text = button_font.render("START", True, WHITE)
     start_text_rect = start_text.get_rect(center=start_button.center)
