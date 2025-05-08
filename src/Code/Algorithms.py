@@ -18,10 +18,8 @@ def a_star(maze):
     # Bắt đầu vòng lặp chính của thuật toán
     while not frontier.empty():
         current_priority, current = frontier.get()  # Lấy ra đỉnh có độ ưu tiên nhỏ nhất từ hàng đợi
-
         if current == end_node:  # Nếu đỉnh hiện tại là điểm kết thúc, thoát khỏi vòng lặp
             break
-
         # Duyệt qua các đỉnh kề của đỉnh hiện tại
         for next in maze.get_neighbors(current[0], current[1]):
             # Tính chi phí mới đến đỉnh kề

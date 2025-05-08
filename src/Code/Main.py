@@ -9,7 +9,6 @@ from Algorithms import a_star, heuristic
 
 font_path = "D:/TTNT_MAZE/src/Font/Minecraft.ttf"
 
-
 def main():
     pygame.init()  # Khởi tạo pygame
     
@@ -161,29 +160,116 @@ def main():
         # Trong phần hiển thị thông báo Chúc mừng
         if congrats_display_time is not None:
             elapsed_congrats_time = current_time - congrats_display_time
-            if elapsed_congrats_time < 3000:  # Hiển thị trong 3 giây
-                # Tạo hình nền màu đẹp hơn
-                pygame.draw.rect(screen, (0, 0, 0), (width // 2 - 150, height // 2 - 50, 300, 100))  # Màu xanh lá cây
-                font = pygame.font.Font(None, 48)  # Kích thước chữ lớn hơn
-                congrats_text = font.render("Congratulations!", True, (255, 255, 255))  # Chữ trắng trên nền xanh lá cây
-                text_rect = congrats_text.get_rect(center=(width // 2, height // 2))
-                screen.blit(congrats_text, text_rect)
-            else:
-                congrats_display_time = None  # Ẩn thông báo sau khi đã hiển thị trong khoảng thời gian nhất định
+            if elapsed_congrats_time < 10000:  # Hiển thị trong 10 giây
+                # Vẽ nền thông báo
+                pygame.draw.rect(screen, (0, 100, 0), (width // 2 - 200, height // 2 - 100, 400, 200), border_radius=15)
 
-        # Kiểm tra và vẽ thông báo game over nếu cần
+                mouse_pos = pygame.mouse.get_pos()
+
+                # Hiển thị dòng chữ "Congratulations!"
+                font = pygame.font.Font(None, 48)
+                congrats_text = font.render("Congratulations !!", True, (255, 255, 255))
+                text_rect = congrats_text.get_rect(center=(width // 2, height // 2 - 50))
+                screen.blit(congrats_text, text_rect)
+
+                # Nút "Chơi tiếp"
+                continue_button_rect = pygame.Rect(width // 2 - 150, height // 2 + 10, 120, 40)
+                # Thêm bóng đổ cho nút
+                pygame.draw.rect(screen, (0, 100, 0), continue_button_rect, border_radius=10)  # Nút màu xanh
+                pygame.draw.rect(screen, (0, 50, 0), continue_button_rect.move(3, 3), border_radius=10)  # Bóng đổ
+                continue_font = pygame.font.Font(None, 32)
+                continue_text = continue_font.render("New Maze", True, (255, 255, 255))
+                continue_rect = continue_text.get_rect(center=(width // 2 - 90, height // 2 + 30))
+                screen.blit(continue_text, continue_rect)
+
+                # Nút "Thoát game"
+                quit_button_rect = pygame.Rect(width // 2 + 30, height // 2 + 10, 120, 40)
+                # Thêm bóng đổ cho nút
+                pygame.draw.rect(screen, (150, 0, 0), quit_button_rect, border_radius=10)  # Nút màu đỏ
+                pygame.draw.rect(screen, (100, 0, 0), quit_button_rect.move(3, 3), border_radius=10)  # Bóng đổ
+                quit_text = continue_font.render("Exit Game !", True, (255, 255, 255))
+                quit_rect = quit_text.get_rect(center=(width // 2 + 90, height // 2 + 30))
+                screen.blit(quit_text, quit_rect)
+
+                # Hiệu ứng hover: thay đổi màu khi di chuột vào nút
+                if continue_button_rect.collidepoint(mouse_pos):
+                    pygame.draw.rect(screen, (0, 200, 0), continue_button_rect, border_radius=10)  # Màu sáng khi hover
+                if quit_button_rect.collidepoint(mouse_pos):
+                    pygame.draw.rect(screen, (200, 0, 0), quit_button_rect, border_radius=10)  # Màu sáng khi hover
+
+            else:
+                congrats_display_time = None
+
+            # Nếu đang hiển thị chúc mừng thì xử lý click vào nút
+            if congrats_display_time is not None:
+                mouse_x, mouse_y = pygame.mouse.get_pos()
+                if (width // 2 - 150 <= mouse_x <= width // 2 - 30) and (height // 2 + 10 <= mouse_y <= height // 2 + 50):
+                    # Chơi tiếp
+                    maze = Maze(35, 25)
+                    ai = AI(maze)
+                    auto_play = False
+                    shortest_path = None
+                    start_time = None
+                    game_over = False
+                    maze_completed = False
+                    congrats_display_time = None
+                    pygame.mixer.music.load("D:/TTNT_MAZE/src/Music/nhac.mp3")
+                    pygame.mixer.music.play()
+                elif (width // 2 + 30 <= mouse_x <= width // 2 + 150) and (height // 2 + 10 <= mouse_y <= height // 2 + 50):
+                    # Thoát game
+                    running = False
+
+
+       # Kiểm tra và vẽ thông báo game over nếu cần
         if game_over_display_time is not None:
             elapsed_game_over_time = current_time - game_over_display_time
             if elapsed_game_over_time < 3000:  # Hiển thị thông báo trong 3 giây
-                 # Tạo hình nền màu đẹp hơn
-                pygame.draw.rect(screen, (0, 0, 0), (width // 2 - 150, height // 2 - 50, 300, 100))  # Màu đỏ
+                # Tạo hình nền màu đẹp hơn
+                pygame.draw.rect(screen, (0, 0, 0), (width // 2 - 150, height // 2 - 50, 300, 100), border_radius=15)  # Màu đen, bo góc
+
                 font = pygame.font.Font(None, 48)  # Kích thước chữ lớn hơn
-                game_over_text = font.render("Game Over!", True, (255, 255, 255))  # Chữ trắng trên nền đỏ
+                game_over_text = font.render("Game Over!", True, (255, 255, 255))  # Chữ trắng trên nền đen
                 text_rect = game_over_text.get_rect(center=(width // 2, height // 2))
                 screen.blit(game_over_text, text_rect)
+
+                # Vẽ nút "Chơi lại"
+                restart_button_rect = pygame.Rect(width // 2 - 150, height // 2 + 20, 120, 40)
+                pygame.draw.rect(screen, (0, 100, 0), restart_button_rect, border_radius=10)  # Nút màu xanh
+                pygame.draw.rect(screen, (0, 50, 0), restart_button_rect.move(3, 3), border_radius=10)  # Bóng đổ
+                restart_font = pygame.font.Font(None, 32)
+                restart_text = restart_font.render("Restart", True, (255, 255, 255))
+                restart_rect = restart_text.get_rect(center=(width // 2 - 90, height // 2 + 40))
+                screen.blit(restart_text, restart_rect)
+
+                # Vẽ nút "Thoát game"
+                quit_button_rect = pygame.Rect(width // 2 + 30, height // 2 + 20, 120, 40)
+                pygame.draw.rect(screen, (150, 0, 0), quit_button_rect, border_radius=10)  # Nút màu đỏ
+                pygame.draw.rect(screen, (100, 0, 0), quit_button_rect.move(3, 3), border_radius=10)  # Bóng đổ
+                quit_text = restart_font.render("Exit Game", True, (255, 255, 255))
+                quit_rect = quit_text.get_rect(center=(width // 2 + 90, height // 2 + 40))
+                screen.blit(quit_text, quit_rect)
+
             else:
                 game_over_display_time = None  # Ẩn thông báo sau khi đã hiển thị trong khoảng thời gian nhất định
-       
+
+        # Kiểm tra click vào nút khi game over
+        if game_over_display_time is not None:
+            mouse_x, mouse_y = pygame.mouse.get_pos()
+            if (width // 2 - 150 <= mouse_x <= width // 2 - 30) and (height // 2 + 20 <= mouse_y <= height // 2 + 60):
+                # Chơi lại
+                ai = AI(maze)
+                auto_play = False
+                shortest_path = None
+                start_time = None
+                game_over = False
+                maze_completed = False
+                game_over_display_time = None
+                pygame.mixer.music.load("D:/TTNT_MAZE/src/Music/nhac.mp3")  # Phát lại nhạc
+                pygame.mixer.music.play()
+            elif (width // 2 + 30 <= mouse_x <= width // 2 + 150) and (height // 2 + 20 <= mouse_y <= height // 2 + 60):
+                # Thoát game
+                running = False
+
         pygame.display.flip()
         pygame.time.delay(100)
 
