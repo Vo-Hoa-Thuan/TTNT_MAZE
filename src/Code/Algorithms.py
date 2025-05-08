@@ -5,7 +5,6 @@ from pygame.locals import *
 from queue import PriorityQueue
 
 def a_star(maze):
-    
     start_node = (maze.start_x, maze.start_y) 
     end_node = (maze.end_x, maze.end_y) 
     frontier = PriorityQueue()  
